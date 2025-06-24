@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Clinics\Tables;
 
 use App\Models\User;
-use App\Models\Clinic;
 use Filament\Tables\Table;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
@@ -25,26 +24,25 @@ class ClinicsTable
                     ->searchable(),
                 TextColumn::make('phone')
                     ->searchable(),
+
             ])
             ->filters([
                 //
             ])
             ->recordActions([
-                Action::make('Add users')
-                    ->icon('heroicon-o-plus')
-                    ->form(function () {
-                        return [
-                            Select::make('selectedUsers')
-                                ->options(User::pluck('name', 'id')->toArray())
-                                ->multiple()
-                                ->preload()
-                                ->searchable()
-                        ];
-                    })
-                    ->action(function (Clinic $record, array $data) {
-                        $selectedUsers = $data['selectedUsers'];
-                        $record->users()->syncWithoutDetaching($selectedUsers);
-                    }),
+                Action::make('Add users')->icon('heroicon-o-plus')->form(function () {
+                    return [
+                        Select::make('selectedUsers')
+                            // ->relationship('users', 'name')
+                            ->options(User::pluck('name', 'id'))
+                            ->multiple()
+                            ->preload()
+                            ->searchable()
+                    ];
+                })->action(function ($record, array $data) {
+                    $selectedUsers = $data['selectedUsers'];
+                    $record->users()->syncWithoutDetaching($selectedUsers);
+                }),
                 ViewAction::make(),
                 EditAction::make(),
             ])

@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Filament\Panel;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable implements HasTenants
 {
@@ -38,19 +36,13 @@ class User extends Authenticatable implements HasTenants
     {
         return $this->belongsToMany(Clinic::class);
     }
-
-    public function appointments()
-    {
-        return $this->hasMany(Appointment::class);
-    }
-
     public function getTenants(Panel $panel): Collection
     {
-        return $this->clinics;
+        return $this->teams;
     }
 
     public function canAccessTenant(Model $tenant): bool
     {
-        return $this->clinics()->whereKey($tenant)->exists();
+        return $this->teams()->whereKey($tenant)->exists();
     }
 }

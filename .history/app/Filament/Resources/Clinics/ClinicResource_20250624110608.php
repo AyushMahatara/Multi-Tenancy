@@ -26,7 +26,7 @@ class ClinicResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->id == 1;
+        return auth()->user()->id == 2;
     }
 
     public static function form(Schema $schema): Schema

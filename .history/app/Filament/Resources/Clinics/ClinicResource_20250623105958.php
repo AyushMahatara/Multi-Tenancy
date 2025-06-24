@@ -22,12 +22,7 @@ class ClinicResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static bool $isScopedToTenant = false;
-
-    public static function canAccess(): bool
-    {
-        return auth()->user()->id == 1;
-    }
+    protected static bool $isScopedToTenants = false;
 
     public static function form(Schema $schema): Schema
     {

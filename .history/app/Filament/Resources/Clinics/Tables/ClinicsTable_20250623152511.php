@@ -12,6 +12,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Forms\Components\Select;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\CheckboxList;
 
 class ClinicsTable
 {
@@ -25,6 +26,7 @@ class ClinicsTable
                     ->searchable(),
                 TextColumn::make('phone')
                     ->searchable(),
+
             ])
             ->filters([
                 //
@@ -32,22 +34,32 @@ class ClinicsTable
             ->recordActions([
                 Action::make('Add users')
                     ->icon('heroicon-o-plus')
-                    ->form(function () {
-                        return [
-                            Select::make('selectedUsers')
-                                ->options(User::pluck('name', 'id')->toArray())
-                                ->multiple()
-                                ->preload()
-                                ->searchable()
-                        ];
-                    })
+                    ->form([
+                        CheckboxList::make('selectedUsers')
+                            ->options(fn() => User::all()->pluck('name', 'id')->toArray())
+                    ])
                     ->action(function (Clinic $record, array $data) {
-                        $selectedUsers = $data['selectedUsers'];
-                        $record->users()->syncWithoutDetaching($selectedUsers);
+                        $record->users()->syncWithoutDetaching($data['selectedUsers'] ?? []);
                     }),
-                ViewAction::make(),
-                EditAction::make(),
             ])
+
+            // ->recordActions([
+            //     Action::make('Add users')->icon('heroicon-o-plus')
+            //         ->form(function () {
+            //             return [
+            //                 Select::make('selectedUsers')
+            //                     ->options(User::pluck('name', 'id')->toArray())
+            //                     ->multiple()
+            //                     ->preload()
+            //                     ->searchable()
+            //             ];
+            //         })->action(function (Clinic $record, array $data) {
+            //             $selectedUsers = $data['selectedUsers'];
+            //             $record->users()->syncWithoutDetaching($selectedUsers);
+            //         }),
+            //     ViewAction::make(),
+            //     EditAction::make(),
+            // ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),

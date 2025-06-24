@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Filament\Resources\Users\Tables;
+namespace App\Filament\Resources\Clinics\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class UsersTable
+class ClinicsTable
 {
     public static function configure(Table $table): Table
     {
@@ -17,24 +19,21 @@ class UsersTable
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('email')
+                TextColumn::make('address')
                     ->searchable(),
-                // TextColumn::make('email_verified_at')
-                //     ->dateTime()
-                //     ->sortable(),
-                // TextColumn::make('created_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // TextColumn::make('updated_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('phone')
+                    ->searchable(),
+
             ])
             ->filters([
                 //
             ])
             ->recordActions([
+                Action::make('Add users')->icon('heroicon-o-plus')->form(function () {
+                    return [
+                        Select::make('selectedUser')
+                    ];
+                }),
                 ViewAction::make(),
                 EditAction::make(),
             ])

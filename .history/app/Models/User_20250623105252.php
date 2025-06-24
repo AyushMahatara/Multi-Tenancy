@@ -38,12 +38,6 @@ class User extends Authenticatable implements HasTenants
     {
         return $this->belongsToMany(Clinic::class);
     }
-
-    public function appointments()
-    {
-        return $this->hasMany(Appointment::class);
-    }
-
     public function getTenants(Panel $panel): Collection
     {
         return $this->clinics;
@@ -51,6 +45,6 @@ class User extends Authenticatable implements HasTenants
 
     public function canAccessTenant(Model $tenant): bool
     {
-        return $this->clinics()->whereKey($tenant)->exists();
+        return $this->teams()->whereKey($tenant)->exists();
     }
 }

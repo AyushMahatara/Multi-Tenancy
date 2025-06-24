@@ -25,6 +25,7 @@ class ClinicsTable
                     ->searchable(),
                 TextColumn::make('phone')
                     ->searchable(),
+
             ])
             ->filters([
                 //

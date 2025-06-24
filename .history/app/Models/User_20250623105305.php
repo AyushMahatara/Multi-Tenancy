@@ -38,12 +38,6 @@ class User extends Authenticatable implements HasTenants
     {
         return $this->belongsToMany(Clinic::class);
     }
-
-    public function appointments()
-    {
-        return $this->hasMany(Appointment::class);
-    }
-
     public function getTenants(Panel $panel): Collection
     {
         return $this->clinics;

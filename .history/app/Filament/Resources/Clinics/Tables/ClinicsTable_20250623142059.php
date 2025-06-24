@@ -25,23 +25,22 @@ class ClinicsTable
                     ->searchable(),
                 TextColumn::make('phone')
                     ->searchable(),
+
             ])
             ->filters([
                 //
             ])
             ->recordActions([
-                Action::make('Add users')
-                    ->icon('heroicon-o-plus')
+                Action::make('Add users')->icon('heroicon-o-plus')
                     ->form(function () {
                         return [
                             Select::make('selectedUsers')
-                                ->options(User::pluck('name', 'id')->toArray())
+                                ->options(fn() => User::pluck('name', 'id')->toArray())
                                 ->multiple()
                                 ->preload()
                                 ->searchable()
                         ];
-                    })
-                    ->action(function (Clinic $record, array $data) {
+                    })->action(function (Clinic $record, array $data) {
                         $selectedUsers = $data['selectedUsers'];
                         $record->users()->syncWithoutDetaching($selectedUsers);
                     }),

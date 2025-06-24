@@ -23,7 +23,7 @@ class UserResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
 
-    protected static ?string $tenantOwnershipRelationshipName = 'clinics';
+    protected static ?string $tenantOwnershipRelationshipName = false;
 
 
     public static function form(Schema $schema): Schema

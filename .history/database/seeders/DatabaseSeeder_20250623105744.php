@@ -28,11 +28,9 @@ class DatabaseSeeder extends Seeder
             $clinic =  Clinic::create([
                 'name' => 'Test Clinic 1',
                 'address' => 'Test Address 1',
-                'phone' => '9801234567',
             ]);
+
             User::where('id', 1)->first()->clinics()->attach($clinic);
         }
-
-        $this->call(ClinicUserSeeder::class);
     }
 }

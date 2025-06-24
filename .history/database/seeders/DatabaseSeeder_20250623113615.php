@@ -32,7 +32,5 @@ class DatabaseSeeder extends Seeder
             ]);
             User::where('id', 1)->first()->clinics()->attach($clinic);
         }
-
-        $this->call(ClinicUserSeeder::class);
     }
 }

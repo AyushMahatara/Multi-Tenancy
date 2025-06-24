@@ -16,23 +16,21 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         if (empty(User::count())) {
+            User::factory(10)->create();
+
             User::factory()->create([
                 'name' => 'Test Doctor',
                 'email' => 'test@test.com',
                 'password' => Hash::make('password'),
             ]);
-            User::factory(10)->create();
         }
 
         if (empty(Clinic::count())) {
-            $clinic =  Clinic::create([
+            Clinic::create([
                 'name' => 'Test Clinic 1',
                 'address' => 'Test Address 1',
-                'phone' => '9801234567',
+                'user_id' => User::where('email', 'test@test.com')->first()->id
             ]);
-            User::where('id', 1)->first()->clinics()->attach($clinic);
         }
-
-        $this->call(ClinicUserSeeder::class);
     }
 }

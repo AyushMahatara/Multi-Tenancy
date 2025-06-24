@@ -2,16 +2,14 @@
 
 namespace App\Filament\Resources\Clinics\Tables;
 
-use App\Models\User;
-use App\Models\Clinic;
-use Filament\Tables\Table;
 use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Actions\BulkActionGroup;
 use Filament\Forms\Components\Select;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class ClinicsTable
 {
@@ -25,23 +23,22 @@ class ClinicsTable
                     ->searchable(),
                 TextColumn::make('phone')
                     ->searchable(),
+
             ])
             ->filters([
                 //
             ])
             ->recordActions([
-                Action::make('Add users')
-                    ->icon('heroicon-o-plus')
+                Action::make('Add users')->icon('heroicon-o-plus')
                     ->form(function () {
                         return [
                             Select::make('selectedUsers')
-                                ->options(User::pluck('name', 'id')->toArray())
+                                ->relationship('users', 'name')
                                 ->multiple()
                                 ->preload()
                                 ->searchable()
                         ];
-                    })
-                    ->action(function (Clinic $record, array $data) {
+                    })->action(function (Clinic $record, array $data) {
                         $selectedUsers = $data['selectedUsers'];
                         $record->users()->syncWithoutDetaching($selectedUsers);
                     }),

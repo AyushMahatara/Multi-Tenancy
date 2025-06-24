@@ -25,6 +25,7 @@ class ClinicsTable
                     ->searchable(),
                 TextColumn::make('phone')
                     ->searchable(),
+
             ])
             ->filters([
                 //
@@ -32,6 +33,22 @@ class ClinicsTable
             ->recordActions([
                 Action::make('Add users')
                     ->icon('heroicon-o-plus')
+                    ->form([
+                        Select::make('selectedUsers')
+                            ->label('Select Users')
+                            ->options(fn() => \App\Models\User::pluck('name', 'id')->toArray())
+                            ->multiple()
+                            ->preload()
+                            ->searchable(),
+                    ])
+                    ->action(function (Clinic $record, array $data) {
+                        $selectedUsers = $data['selectedUsers'] ?? [];
+                        $record->users()->syncWithoutDetaching($selectedUsers);
+                    }),
+            ])
+
+            ->recordActions([
+                Action::make('Add users')->icon('heroicon-o-plus')
                     ->form(function () {
                         return [
                             Select::make('selectedUsers')
@@ -40,8 +57,7 @@ class ClinicsTable
                                 ->preload()
                                 ->searchable()
                         ];
-                    })
-                    ->action(function (Clinic $record, array $data) {
+                    })->action(function (Clinic $record, array $data) {
                         $selectedUsers = $data['selectedUsers'];
                         $record->users()->syncWithoutDetaching($selectedUsers);
                     }),
